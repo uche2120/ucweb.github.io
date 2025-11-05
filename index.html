@@ -33,7 +33,12 @@
         <div class="container hero-content">
             <h1>Experience Luxury Beauty Care</h1>
             <p>Your local sanctuary for premium beauty treatments and wellness services. We're dedicated to helping you look and feel your absolute best.</p>
-            <a href="#appointment" class="btn">Book Appointment</a>
+            <div class="booking-options">
+                <a href="#" class="btn" id="open-modal">Book Appointment</a>
+                <a href="https://wa.me/1234567890?text=Hi,%20I%20would%20like%20to%20book%20an%20appointment" class="btn btn-whatsapp" target="_blank">
+                    <i class="fab fa-whatsapp"></i> Book via WhatsApp
+                </a>
+            </div>
         </div>
     </section>
 
@@ -307,6 +312,54 @@
         </div>
     </footer>
 
+    <!-- Appointment Modal -->
+    <div class="modal" id="appointment-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 class="modal-title">Book Your Appointment</h2>
+            <form id="modal-booking-form">
+                <div class="form-group">
+                    <label for="modal-name">Full Name</label>
+                    <input type="text" id="modal-name" class="form-control" placeholder="Your Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="modal-email">Email Address</label>
+                    <input type="email" id="modal-email" class="form-control" placeholder="Your Email" required>
+                </div>
+                <div class="form-group">
+                    <label for="modal-phone">Phone Number</label>
+                    <input type="tel" id="modal-phone" class="form-control" placeholder="Your Phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="modal-service">Select Service</label>
+                    <select id="modal-service" class="form-control" required>
+                        <option value="">Choose a Service</option>
+                        <option value="facial">Facial & Skincare</option>
+                        <option value="hair">Hair Styling</option>
+                        <option value="nails">Manicure & Pedicure</option>
+                        <option value="brows">Brow & Lash Services</option>
+                        <option value="massage">Massage Therapy</option>
+                        <option value="makeup">Makeup Artistry</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="modal-date">Preferred Date</label>
+                    <input type="date" id="modal-date" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="modal-time">Preferred Time</label>
+                    <input type="time" id="modal-time" class="form-control" required>
+                </div>
+                <button type="submit" class="btn" style="width: 100%;">Book Now</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/1234567890?text=Hi,%20I%20would%20like%20to%20book%20an%20appointment" class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
     <script>
         // Mobile Menu Toggle
         const mobileMenu = document.querySelector('.mobile-menu');
@@ -323,11 +376,38 @@
             });
         });
         
+        // Modal Functionality
+        const modal = document.getElementById('appointment-modal');
+        const openModalBtn = document.getElementById('open-modal');
+        const closeModalBtn = document.querySelector('.close-modal');
+        
+        openModalBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            modal.style.display = 'flex';
+        });
+        
+        closeModalBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+        
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+        
         // Form Submission
         document.getElementById('booking-form').addEventListener('submit', function(e) {
             e.preventDefault();
             alert('Thank you for your booking request! We will contact you shortly to confirm your appointment.');
             this.reset();
+        });
+        
+        document.getElementById('modal-booking-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your booking request! We will contact you shortly to confirm your appointment.');
+            this.reset();
+            modal.style.display = 'none';
         });
         
         document.getElementById('contact-form').addEventListener('submit', function(e) {
@@ -339,6 +419,21 @@
         // Set minimum date for appointment to today
         const today = new Date().toISOString().split('T')[0];
         document.getElementById('date').setAttribute('min', today);
+        document.getElementById('modal-date').setAttribute('min', today);
+        
+        // Update WhatsApp number - replace with actual business number
+        function updateWhatsAppLinks() {
+            const phoneNumber = "1234567890"; // Replace with actual number
+            const message = "Hi, I would like to book an appointment";
+            const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+            
+            // Update all WhatsApp links
+            document.querySelectorAll('a[href*="wa.me"]').forEach(link => {
+                link.href = whatsappURL;
+            });
+        }
+        
+        updateWhatsAppLinks();
     </script>
 </body>
 </html>
